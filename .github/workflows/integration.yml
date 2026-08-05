@@ -164,5 +164,5 @@ jobs:
             community.crypto
             ansible.windows
             ${{ steps.set-path.outputs.collection_dep }}
-          pre-test-cmd: |
+          pre-test-cmd: |-
             python3 -m pip install -r tests/integration/requirements.txt -r tests/integration/constraints.txt
