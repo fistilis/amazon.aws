@@ -9,6 +9,7 @@
 {% else %}
     tags: {}
 {% endif %}
+  name: "{{ item.tags.Name | default(item.route_table_id) }}"
   facts:
     device_type: {{ networking_facts.route_table }}
 {% for key, value in networking_common_facts.items()%}

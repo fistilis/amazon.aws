@@ -1,0 +1,2 @@
+bugfixes:
+  - event_query.yml - add a non-null top-level ``name`` to every module's indirect-node audit query so records are never dropped. Previously 13 of 15 modules (all networking, storage, and database ``*_info`` queries) emitted only ``canonical_facts.name`` or no name at all; the controller's ``main_indirectmanagednodeaudit.name`` column is ``NOT NULL``, so those records raised an integrity error that aborted the whole job's ``bulk_create`` and silently discarded every indirect node counted by the job.

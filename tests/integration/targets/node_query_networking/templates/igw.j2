@@ -14,6 +14,7 @@
 {% else %}
     tags: {}
 {% endif %}
+  name: "{{ item.tags.Name | default(item.internet_gateway_id) }}"
   facts:
     device_type: {{ networking_facts.igw }}
 {% for key, value in networking_common_facts.items()%}

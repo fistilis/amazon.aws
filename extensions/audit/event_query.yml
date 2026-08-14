@@ -4,7 +4,7 @@
 amazon.aws.ec2_instance_info:
   query: >-
     .instances[] | select(. != null) | {
-      name: (.name // .tags.Name // "UNKNOWN"),  # unique identifier for the resource
+      name: (.name // .tags.Name // .instance_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
       id: .instance_id,
       status: .state.name,
@@ -23,6 +23,7 @@ amazon.aws.elb_application_lb_info:
   query: >-
     .load_balancers[] | select(. != null) |
     {
+      name: (.load_balancer_name // .tags.Name // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         name: .load_balancer_name,
         status: .state.code,
@@ -39,6 +40,7 @@ amazon.aws.elb_classic_lb_info:
   query: >-
     .elbs[] | select(. != null) |
     {
+      name: (.load_balancer_name // .tags.Name // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         name: .load_balancer_name,
         tags: (.tags // {}),
@@ -53,7 +55,7 @@ amazon.aws.elb_classic_lb_info:
 amazon.aws.ec2_vpc_net_info:
   query: >-
     .vpcs[] | select(. != null) | {
-        name: (.name // .tags.Name // "UNKNOWN"),
+        name: (.name // .tags.Name // .id // "UNKNOWN"),
         canonical_facts: {
           id: .id,
           status: .state,
@@ -69,6 +71,7 @@ amazon.aws.ec2_vpc_net_info:
 amazon.aws.ec2_vpc_subnet_info:
   query: >-
     .subnets[] | select(. != null) | {
+      name: (.tags.Name // .id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .id,
         status: .state,
@@ -85,6 +88,7 @@ amazon.aws.ec2_vpc_nat_gateway_info:
   query: >-
     .result[] | select(. != null) |
     {
+      name: (.tags.Name // .nat_gateway_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .nat_gateway_id,
         status: .state,
@@ -101,6 +105,7 @@ amazon.aws.ec2_vpc_igw_info:
   query: >-
     .internet_gateways[] | select(. != null) |
     {
+      name: (.tags.Name // .internet_gateway_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .internet_gateway_id,
         status: (.attachments | map({vpc_id: .vpc_id, status: .state})),
@@ -117,6 +122,7 @@ amazon.aws.ec2_vpc_vgw_info:
   query: >-
     .virtual_gateways[] | select(. != null) |
     {
+      name: (.resource_tags.Name // .vpn_gateway_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .vpn_gateway_id,
         status: .state,
@@ -133,6 +139,7 @@ amazon.aws.ec2_vpc_route_table_info:
   query: >-
     .route_tables[] | select(. != null) |
     {
+      name: (.tags.Name // .route_table_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .route_table_id,
         tags: (.tags // {})
@@ -148,6 +155,7 @@ amazon.aws.ec2_vpc_vpn_info:
   query: >-
     .vpn_connections[] | select(. != null) |
     {
+      name: (.tags.Name // .vpn_connection_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .vpn_connection_id,
         status: .state,
@@ -164,6 +172,7 @@ amazon.aws.ec2_vpc_peering_info:
   query: >-
     .vpc_peering_connections[] | select(. != null) |
     {
+      name: (.tags.Name // .vpc_peering_connection_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .vpc_peering_connection_id,
         status: .status.code,
@@ -182,6 +191,7 @@ amazon.aws.s3_bucket_info:
   query: >-
     .buckets[] | select(. != null) |
     {
+      name: (.name // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         name: .name,
         tags: (.bucket_tagging // {})
@@ -197,6 +207,7 @@ amazon.aws.s3_object_info:
   query: >-
     .object_info[] | select(. != null) |
     {
+      name: (.object_name // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         name: .object_name,
         tags: (.object_tagging // {})
@@ -214,6 +225,7 @@ amazon.aws.rds_instance_info:
   query: >-
     .instances[] | select(. != null) |
     {
+      name: (.db_instance_identifier // .dbi_resource_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .dbi_resource_id,  # AWS Region-unique, immutable identifier for the DB instance.
         name: .db_instance_identifier,  # The user-supplied DB cluster identifier.
@@ -232,6 +244,7 @@ amazon.aws.rds_cluster_info:
   query: >-
     .clusters[] | select(. != null) |
     {
+      name: (.db_cluster_identifier // .db_cluster_resource_id // "UNKNOWN"),  # unique identifier for the resource
       canonical_facts: {
         id: .db_cluster_resource_id,  # The AWS Region-unique, immutable identifier for the DB cluster.
         name: .db_cluster_identifier,  # The user-supplied DB cluster identifier.

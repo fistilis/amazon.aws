@@ -69,8 +69,9 @@
             that:
               - node_count == expected_result  
           vars:
-            expected_result: 
-              - canonical_facts:
+            expected_result:
+              - name: "{{ resource_prefix }}-instance-1"
+                canonical_facts:
                   id: "{{ instance_1.dbi_resource_id }}"
                   name: "{{ resource_prefix }}-instance-1"
                   status: "{{ instance_1.db_instance_status }}"
@@ -78,7 +79,8 @@
                     Name: "{{ resource_prefix }}-instance-1"
                     Created_by: Ansible Indirect NodeQuery Count integration tests
                 facts: "{{ rds_instance_facts }}"
-              - canonical_facts:
+              - name: "{{ resource_prefix }}-instance-2"
+                canonical_facts:
                   id: "{{ instance_2.dbi_resource_id }}"
                   name: "{{ resource_prefix }}-instance-2"
                   status: "{{ instance_2.db_instance_status }}"

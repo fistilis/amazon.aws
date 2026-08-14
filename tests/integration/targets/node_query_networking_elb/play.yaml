@@ -170,6 +170,7 @@
           ansible.builtin.assert:
             that:
               - alb_node_result | length == 1
+              - alb_node_result[0].name == alb_name
               - alb_node_result[0].canonical_facts.name == alb_name
               - alb_node_result[0].canonical_facts.tags == alb_tags
               - alb_node_result[0].facts == alb_facts
@@ -189,6 +190,7 @@
           ansible.builtin.assert:
             that:
               - classic_elb_node_result | length == 1
+              - classic_elb_node_result[0].name == classic_elb_name
               - classic_elb_node_result[0].canonical_facts.name == classic_elb_name
               - classic_elb_node_result[0].canonical_facts.tags == classic_elb_tags
               - classic_elb_node_result[0].facts == classic_elb_facts
@@ -227,6 +229,7 @@
           ansible.builtin.assert:
             that:
               - alb_notags_result | length == 1
+              - alb_notags_result[0].name == alb_name + "-notags"
               - alb_notags_result[0].canonical_facts.name == alb_name + "-notags"
               - alb_notags_result[0].canonical_facts.tags == {}
               - alb_notags_result[0].facts == alb_facts
@@ -258,6 +261,7 @@
           ansible.builtin.assert:
             that:
               - classic_elb_notags_result | length == 1
+              - classic_elb_notags_result[0].name == classic_elb_name + "-notags"
               - classic_elb_notags_result[0].canonical_facts.name == classic_elb_name + "-notags"
               - classic_elb_notags_result[0].canonical_facts.tags == {}
               - classic_elb_notags_result[0].facts == classic_elb_facts

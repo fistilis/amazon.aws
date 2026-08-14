@@ -81,6 +81,18 @@ The table below details how AWS resources are mapped to these canonical facts.
 | **Networking** | **VPC Peering Connection** | `ec2_vpc_peering_info` | `.vpc_peering_connection_id` → **id**<br>`.state.code` → **status**<br>`.tags` → **tags**|
 | **Networking** | **VPN Connection** | `ec2_vpc_vpn_info` | `.vpn_connection_id` → **id**<br>`.state` → **status**<br>`.tags` → **tags** |
 
+## Top-Level `name`
+
+In addition to the `canonical_facts` above, every emitted record carries a required, non-null top-level `name` — a human-readable label for the resource. This is mandatory: the controller stores each record in a column that is `NOT NULL`, so a record without a `name` is rejected.
+
+Each query derives `name` from the most descriptive field available and falls back to the resource's unique identifier, so a resource with no name or tags is still labelled rather than dropped. For example:
+
+- `ec2_instance_info`: `.name // .tags.Name // .instance_id`
+- `ec2_vpc_net_info`: `.name // .tags.Name // .id`
+- Tag-based networking resources (subnet, NAT/Internet/VPN gateway, route table, peering): `.tags.Name // .<resource>_id`
+
+As a last resort, `name` is set to `"UNKNOWN"` so the record is always emitted.
+
 ## Testing and Validation
 
 Reliability is ensured through integration testing. The **extensions/audit/event_query.yml** file is explicitly tested in this collection to verify that the node counting logic works as expected against the supported resources.

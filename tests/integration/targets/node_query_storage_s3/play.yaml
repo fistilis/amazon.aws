@@ -56,13 +56,15 @@
             that:
               - node_count == expected_result  
           vars:
-            expected_result: 
-              - canonical_facts:
+            expected_result:
+              - name: "bucket-{{ resource_prefix }}-1"
+                canonical_facts:
                   name: "bucket-{{ resource_prefix }}-1"
                   tags:
                     resource_prefix: "{{ resource_prefix }}"
                 facts: "{{ s3_bucket_facts }}"
-              - canonical_facts:
+              - name: "bucket-{{ resource_prefix }}-2"
+                canonical_facts:
                   name: "bucket-{{ resource_prefix }}-2"
                   tags: {}
                 facts: "{{ s3_bucket_facts }}"
@@ -94,13 +96,15 @@
             that:
               - node_count == expected_result  
           vars:
-            expected_result: 
-              - canonical_facts:
+            expected_result:
+              - name: "{{ s3_objects.0.name }}"
+                canonical_facts:
                   name: "{{ s3_objects.0.name }}"
                   tags:
                     resource_prefix: "{{ resource_prefix }}"
                 facts: "{{ s3_object_facts }}"
-              - canonical_facts:
+              - name: "{{ s3_objects.1.name }}"
+                canonical_facts:
                   name: "{{ s3_objects.1.name }}"
                   tags: {}
                 facts: "{{ s3_object_facts }}"

@@ -10,6 +10,7 @@
 {% else %}
     tags: {}
 {% endif %}
+  name: "{{ (item.resource_tags | default({})).Name | default(item.vpn_gateway_id) }}"
   facts:
     device_type: {{ networking_facts.vgw }}
 {% for key, value in networking_common_facts.items()%}
