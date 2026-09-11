@@ -32,15 +32,16 @@ node_queries:
     sample:
         {
           "s3_bucket_info":
-            '.buckets[] | select(. != null) |
+            '.buckets[] | select(. != null) | {
+                name: (.name // "UNKNOWN"),
                 canonical_facts: {
                     name: .name,
                     tags: (.bucket_tagging // {})
                 },
                 facts: {
-                    infra_type: "PublicCloud",
-                    infra_bucket: "Storage",
-                    device_type: "Bucket"
+                    infra_type: "public_cloud",
+                    infra_bucket: "storage",
+                    device_type: "object_storage"
                 }
             }'
         }

@@ -1,0 +1,5 @@
+---
+trivial:
+  - tests - add unit tests asserting the ``extensions/audit/event_query.yml`` output contract
+    (non-null top-level ``name``, complete taxonomy, normalized taxonomy values) and correct the
+    ``event_query_parser`` return sample to match that contract.
